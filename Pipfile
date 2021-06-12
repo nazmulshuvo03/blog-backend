@@ -11,6 +11,7 @@ django-ckeditor = "*"
 django-extensions = "*"
 Pillow = "*"
 psycopg2 = "*"
+django-heroku = "*"
 
 [dev-packages]
 
