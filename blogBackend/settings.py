@@ -25,7 +25,7 @@ SECRET_KEY = "GOT_NO_SECRET"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['enigmatic-lake-72500.herokuapp.com', 'http://127.0.0.1:8000/']
 
 # Superuser: n@a.com -> nas12345
 
