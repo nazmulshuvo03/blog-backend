@@ -11,24 +11,16 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Add .env variables anywhere before SECRET_KEY
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
-
-HEROKU_API_KEY = "6107131a-c7e2-49d0-978b-ada801a095a6"
-HEROKU_APP_NAME = "pvot_blog_backend"
+# SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = "GOT_NO_SECRET"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
