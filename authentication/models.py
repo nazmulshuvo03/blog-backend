@@ -59,6 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True, verbose_name='Active')
     is_admin = models.BooleanField(default=False, verbose_name='Admin')
     is_superuser = models.BooleanField(default=False, verbose_name="Superuser")
+    about = models.TextField(blank=True, null=True)
 
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'email'

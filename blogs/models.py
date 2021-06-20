@@ -28,6 +28,7 @@ class BlogTags(models.Model):
 
     def __str__(self):
         return self.name
+        
 class Blog(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, unique=True, editable=False)
