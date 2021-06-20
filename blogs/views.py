@@ -18,15 +18,16 @@ def blog_list(request):
     blogs = Blog.objects.all()
     serialized_data = BlogListSerializer(
         blogs, many=True, context={'request': request}).data
-    print('blogs', blogs, serialized_data)
     return JSONResponse({'code': 200, 'response': serialized_data})
 
 
 def blog_detail(request, blog_slug):
-    # blog = Blog.objects.get(slug=blog_slug)
     blog = get_object_or_404(Blog, slug=blog_slug)
-    serialized_data = BlogDetailSerializer(blog).data
-    return JSONResponse({'code': 200, 'response': serialized_data})
+    comments = blog.comments.all()
+    serialized_blog = BlogDetailSerializer(blog).data
+    serialized_comments = CommentSerializer(comments, many=True).data
+    serialized_blog['comments'] = serialized_comments
+    return JSONResponse({'code': 200, 'response': serialized_blog})
 
 
 def blog_type_list(request):

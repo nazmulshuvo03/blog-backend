@@ -1,3 +1,4 @@
+from django.db.models import fields
 from rest_framework import serializers
 from .models import *
 from authentication.serializers import UserDetailsSerializer
@@ -37,4 +38,10 @@ class CreateBlogSerializer(serializers.ModelSerializer):
 class BlogTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogType
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comments
         fields = '__all__'

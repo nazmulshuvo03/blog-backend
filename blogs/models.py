@@ -28,8 +28,6 @@ class BlogTags(models.Model):
 
     def __str__(self):
         return self.name
-
-
 class Blog(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, unique=True, editable=False)
@@ -41,14 +39,16 @@ class Blog(models.Model):
     content = RichTextUploadingField()
     created_date = CreationDateTimeField(null=True)
     updated_date = ModificationDateTimeField(null=True)
-    description = models.CharField(max_length=2000, default="")
+    description = models.CharField(max_length=2000, default="", null=True, blank=True)
     is_active = models.BooleanField(default=True)
     blog_type = models.ForeignKey(
         BlogType, default=None, on_delete=models.SET_DEFAULT, to_field='name', related_name='Type', null=True, blank=True)
     blog_tags = models.ManyToManyField(
         BlogTags, related_name="Tags", blank=True)
     slug = models.SlugField(max_length=2000, editable=False,
-                            default='', unique=True, null=True)
+                            default='', unique=True)
+    likes = models.IntegerField(default=0, blank=True)
+    dislikes = models.IntegerField(default=0, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.heading)
@@ -59,3 +59,20 @@ class Blog(models.Model):
 
     class Meta:
         ordering = ['-created_date']
+
+
+class Comments(models.Model):
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(verbose_name="email",
+                              max_length=255, null=True, blank=True)
+    body = models.TextField()
+    created_on = CreationDateTimeField(null=True)
+    updated_date = ModificationDateTimeField(null=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return 'Comment {} by {}'.format(self.body, self.name)
+
+    class Meta:
+        ordering = ['created_on']
