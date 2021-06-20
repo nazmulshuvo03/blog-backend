@@ -4,7 +4,6 @@ from django.conf import settings
 
 from ckeditor_uploader.fields import RichTextUploadingField
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
-from datetime import datetime, timedelta
 from django.utils.text import slugify
 
 from authentication.models import User
@@ -28,7 +27,7 @@ class BlogTags(models.Model):
 
     def __str__(self):
         return self.name
-        
+
 class Blog(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, unique=True, editable=False)
@@ -37,6 +36,7 @@ class Blog(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, to_field='id', related_name='Author', null=True, blank=True)
     heading = models.CharField(max_length=2000)
+    meta_title = models.CharField(max_length=1000, default="", null=True, blank=True)
     content = RichTextUploadingField()
     created_date = CreationDateTimeField(null=True)
     updated_date = ModificationDateTimeField(null=True)
@@ -50,6 +50,7 @@ class Blog(models.Model):
                             default='', unique=True)
     likes = models.IntegerField(default=0, blank=True)
     dislikes = models.IntegerField(default=0, blank=True)
+    power = models.FloatField(default=0, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.heading)

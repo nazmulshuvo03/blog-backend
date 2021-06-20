@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, UserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 
 from blogBackend.utils import generate_user_id, generate_user_name
 
@@ -60,6 +61,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False, verbose_name='Admin')
     is_superuser = models.BooleanField(default=False, verbose_name="Superuser")
     about = models.TextField(blank=True, null=True)
+    created_date = CreationDateTimeField(null=True)
+    updated_date = ModificationDateTimeField(null=True)
 
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'email'

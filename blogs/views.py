@@ -4,7 +4,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny 
 from rest_framework import status
 from rest_framework.response import Response
-from django.views.decorators.csrf import csrf_exempt
 
 from blogBackend.utils import JSONResponse
 from .models import *
@@ -64,8 +63,9 @@ def like_a_blog(request, blog_slug):
     if request.method == 'PATCH':
         blog = get_object_or_404(Blog, slug=blog_slug)
         new_likes = blog.likes + 1
+        new_power = blog.power + 1
         serializer = CreateBlogSerializer(
-            blog, data={'likes': new_likes}, partial=True)
+            blog, data={'likes': new_likes, 'power': new_power}, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -77,8 +77,9 @@ def dislike_a_blog(request, blog_slug):
     if request.method == 'PATCH':
         blog = get_object_or_404(Blog, slug=blog_slug)
         new_dislikes = blog.dislikes + 1
+        new_power = blog.power - 1
         serializer = CreateBlogSerializer(
-            blog, data={'dislikes': new_dislikes}, partial=True)
+            blog, data={'dislikes': new_dislikes, 'power': new_power}, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
