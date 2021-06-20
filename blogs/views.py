@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny 
 from rest_framework import status
 from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_exempt
 
 from blogBackend.utils import JSONResponse
 from .models import *
@@ -45,6 +46,18 @@ def blog_list_on_type(request, type_slug):
         
     except BlogType.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_comment(request):
+    if request.method == 'POST':
+        serialized_comment = CommentSerializer(data=request.data)
+        if serialized_comment.is_valid():
+            serialized_comment.save()
+            return Response(serialized_comment.data, status=status.HTTP_201_CREATED)
+        return Response(serialized_comment.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
