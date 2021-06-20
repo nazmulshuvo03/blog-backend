@@ -58,6 +58,31 @@ def create_comment(request):
             return Response(serialized_comment.data, status=status.HTTP_201_CREATED)
         return Response(serialized_comment.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PATCH'])
+@permission_classes([AllowAny])
+def like_a_blog(request, blog_slug):
+    if request.method == 'PATCH':
+        blog = get_object_or_404(Blog, slug=blog_slug)
+        new_likes = blog.likes + 1
+        serializer = CreateBlogSerializer(
+            blog, data={'likes': new_likes}, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+@permission_classes([AllowAny])
+def dislike_a_blog(request, blog_slug):
+    if request.method == 'PATCH':
+        blog = get_object_or_404(Blog, slug=blog_slug)
+        new_dislikes = blog.dislikes + 1
+        serializer = CreateBlogSerializer(
+            blog, data={'dislikes': new_dislikes}, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
