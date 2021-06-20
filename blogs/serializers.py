@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import *
-from authentication.models import User
 from authentication.serializers import UserDetailsSerializer
 
 
@@ -32,4 +31,10 @@ class BlogDetailSerializer(serializers.ModelSerializer):
 class CreateBlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
+        fields = '__all__'
+
+
+class BlogTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogType
         fields = '__all__'
