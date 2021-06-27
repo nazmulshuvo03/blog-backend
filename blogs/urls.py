@@ -12,5 +12,6 @@ urlpatterns = [
     path('type/<slug:type_slug>', views.blog_list_on_type, name='blog_list_on_type'),
     path('comment/create', views.create_comment, name='create_comment'),
     path('like/<slug:blog_slug>', views.like_a_blog, name='like_a_blog'),
-    path('dislike/<slug:blog_slug>', views.dislike_a_blog, name='dislike_a_blog')
+    path('dislike/<slug:blog_slug>', views.dislike_a_blog, name='dislike_a_blog'),
+    path('faqs/create', views.create_faqs, name='create_faq'),
 ]

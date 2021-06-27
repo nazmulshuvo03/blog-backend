@@ -24,9 +24,12 @@ def blog_list(request):
 def blog_detail(request, blog_slug):
     blog = get_object_or_404(Blog, slug=blog_slug)
     comments = blog.comments.all()
+    faqs = blog.faqs.all()
     serialized_blog = BlogDetailSerializer(blog).data
     serialized_comments = CommentSerializer(comments, many=True).data
+    serialized_faqs = FaqViewSerializer(faqs, many=True).data
     serialized_blog['comments'] = serialized_comments
+    serialized_blog['faqs'] = serialized_faqs
     return JSONResponse({'code': 200, 'response': serialized_blog})
 
 
@@ -56,6 +59,16 @@ def create_comment(request):
             serialized_comment.save()
             return Response(serialized_comment.data, status=status.HTTP_201_CREATED)
         return Response(serialized_comment.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_faqs(request):
+    if request.method == 'POST':
+        serialized_faq = FaqCreateSerializer(data=request.data, many=True)
+        if serialized_faq.is_valid():
+            serialized_faq.save()
+            return Response(serialized_faq.data, status=status.HTTP_201_CREATED)
+        return Response(serialized_faq.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PATCH'])
 @permission_classes([AllowAny])

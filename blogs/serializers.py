@@ -45,3 +45,17 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
         fields = '__all__'
+
+class FaqCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Faq
+        fields = '__all__'
+
+class FaqViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Faq
+        fields = [
+            'id',
+            'question',
+            'answer'
+        ]

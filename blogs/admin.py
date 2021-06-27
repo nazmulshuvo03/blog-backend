@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Blog, BlogType, BlogTags, Comments
+from .models import Blog, BlogType, BlogTags, Comments, Faq
 
 @admin.register(Comments)
 class CommentAdmin(admin.ModelAdmin):
@@ -18,6 +18,6 @@ class BlogAdmin(admin.ModelAdmin):
     list_filter = ('updated_date', 'created_date', 'blog_type')
     search_fields = ('heading', 'slug', 'content', 'blog_type', 'blog_tags')
 
-
 admin.site.register(BlogType)
 admin.site.register(BlogTags)
+admin.site.register(Faq)
