@@ -2,19 +2,24 @@
 
 
 ### Start virtual env
-pipenv shell
+`pipenv shell`
 
 ### Install packages
-pipenv install
+`pipenv install`
 
 ### Start Django server
-python manage.py runserver
+`python manage.py runserver`
 
 ### Make new database migrations
-python manage.py makemigrations
+`python manage.py makemigrations`
 
-### Migrate database updates
-python manage.py migrate
+### Migrate database update
+`python manage.py migrate`
 
+### Heroku migrations
+`heroku run python manage.py makemigrations`
+
+### Heroku database update
+`heroku run python manage.py migrate`
 ### Heroky deployment
-git push heroku master
+`git push heroku master`
