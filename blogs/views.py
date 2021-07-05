@@ -38,6 +38,15 @@ def blog_type_list(request):
     serialized_types = BlogTypeSerializer(types, many=True).data
     return JSONResponse({'code': 200, 'response': serialized_types})
 
+def blog_type_list_with_blogs(request):
+    types = BlogType.objects.all()
+    serialized_types = BlogTypeSerializer(types, many=True).data
+    for t in serialized_types:
+        blogs = Blog.objects.filter(blog_type=t['name'])
+        serialized_blogs = BlogListSerializer(blogs, many=True).data
+        t['blogs'] = serialized_blogs
+    
+    return JSONResponse({'code': 200, 'response': serialized_types})
 
 def blog_list_on_type(request, type_slug):
     try:
