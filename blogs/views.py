@@ -48,21 +48,6 @@ def blog_type_list(request):
     serialized_types = BlogTypeSerializer(types, many=True).data
     return JSONResponse({'code': 200, 'response': serialized_types})
 
-def blog_type_list_with_blogs(request):
-    types = BlogType.objects.all()
-    serialized_types = BlogTypeSerializer(types, many=True).data
-    for t in serialized_types:
-        blogs = Blog.objects.filter(blog_type=t['name'])
-        serialized_blogs = BlogListSerializer(blogs, many=True).data
-        t['blogs'] = serialized_blogs
-
-    other_blogs = Blog.objects.filter(blog_type=None)
-    serialized_other_blogs = BlogListSerializer(
-        other_blogs, many=True, context={'request': request}).data
-
-    serialized_types.append({'id': len(serialized_types)+1, 'name': 'No Type', 'slug': 'no_type', 'blogs': serialized_other_blogs})
-    return JSONResponse({'code': 200, 'response': serialized_types})
-
 def blogs_without_type(request):
     blogs = Blog.objects.filter(blog_type=None)
     serialized_data = BlogListSerializer(
@@ -78,6 +63,63 @@ def blog_list_on_type(request, type_slug):
         
     except BlogType.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+def blog_type_list_with_published_blogs(request):
+    types = BlogType.objects.all()
+    serialized_types = BlogTypeSerializer(types, many=True).data
+    for t in serialized_types:
+        blogs = Blog.objects.filter(blog_type=t['name'], status='PUBLISHED')
+        serialized_blogs = BlogListSerializer(blogs, many=True).data
+        t['blogs'] = serialized_blogs
+
+    other_blogs = Blog.objects.filter(blog_type=None, status='PUBLISHED')
+    serialized_other_blogs = BlogListSerializer(
+        other_blogs, many=True, context={'request': request}).data
+
+    serialized_types.append({'id': len(serialized_types)+1, 'name': 'No Type', 'slug': 'no_type', 'blogs': serialized_other_blogs})
+    return JSONResponse({'code': 200, 'response': serialized_types})
+
+'''
+if len(search_params) > 0:
+        if list(search_params.keys())[0] == 'status': 
+            blogs = Blog.objects.filter(status=search_params.get('status'))
+        elif list(search_params.keys())[0] == 'blog_type': 
+            blogs = Blog.objects.filter(blog_type=search_params.get('blog_type'))
+        else:
+            blogs = Blog.objects.all()
+    else:
+        blogs = Blog.objects.all()
+'''
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def blog_type_list_with_blogs(request):
+    search_params = request.GET
+    types = BlogType.objects.all()
+    serialized_types = BlogTypeSerializer(types, many=True).data
+    for t in serialized_types:
+        if len(search_params) > 0:
+            if list(search_params.keys())[0] == 'status':
+                blogs = Blog.objects.filter(blog_type=t['name'], status=search_params.get('status'))
+            else:
+                blogs = Blog.objects.filter(blog_type=t['name'])
+        else:
+            blogs = Blog.objects.filter(blog_type=t['name'])
+        serialized_blogs = BlogListSerializer(blogs, many=True).data
+        t['blogs'] = serialized_blogs
+    
+    if len(search_params) > 0:
+        if list(search_params.keys())[0] == 'status':
+            other_blogs = Blog.objects.filter(blog_type=None, status=search_params.get('status'))
+        else:
+            other_blogs = Blog.objects.filter(blog_type=None)
+    else:
+        other_blogs = Blog.objects.filter(blog_type=None)
+    serialized_other_blogs = BlogListSerializer(
+        other_blogs, many=True, context={'request': request}).data
+
+    serialized_types.append({'id': len(serialized_types)+1, 'name': 'No Type', 'slug': 'no_type', 'blogs': serialized_other_blogs})
+    return JSONResponse({'code': 200, 'response': serialized_types})
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
