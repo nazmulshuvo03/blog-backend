@@ -15,7 +15,17 @@ def index(request):
 
 
 def blog_list(request):
-    blogs = Blog.objects.all()
+    search_params = request.GET
+    blogs = []
+    if len(search_params) > 0:
+        if list(search_params.keys())[0] == 'status': 
+            blogs = Blog.objects.filter(status=search_params.get('status'))
+        elif list(search_params.keys())[0] == 'blog_type': 
+            blogs = Blog.objects.filter(blog_type=search_params.get('blog_type'))
+        else:
+            blogs = Blog.objects.all()
+    else:
+        blogs = Blog.objects.all()
     serialized_data = BlogListSerializer(
         blogs, many=True, context={'request': request}).data
     return JSONResponse({'code': 200, 'response': serialized_data})
