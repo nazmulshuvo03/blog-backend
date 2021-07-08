@@ -33,8 +33,9 @@ class Blog(models.Model):
         default='', upload_to='images/', null=True, blank=True)
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, to_field='id', related_name='Author', null=True, blank=True)
-    heading = models.CharField(max_length=2000)
+    heading = models.CharField(max_length=1000)
     meta_title = models.CharField(max_length=1000, default="", null=True, blank=True)
+    page_title = models.CharField(max_length=1000)
     content = RichTextUploadingField()
     created_date = CreationDateTimeField(null=True)
     updated_date = ModificationDateTimeField(null=True)
@@ -49,6 +50,7 @@ class Blog(models.Model):
     likes = models.IntegerField(default=0, blank=True)
     dislikes = models.IntegerField(default=0, blank=True)
     power = models.FloatField(default=0, blank=True)
+    publish =  models.BooleanField(default=False, verbose_name='Publish')
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.heading)
@@ -74,7 +76,7 @@ class Comments(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(verbose_name="email",
                               max_length=255, null=True, blank=True)
-    body = models.TextField()
+    body = models.TextField(max_length=3000)
     created_on = CreationDateTimeField(null=True)
     updated_date = ModificationDateTimeField(null=True)
     active = models.BooleanField(default=True)

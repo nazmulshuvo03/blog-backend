@@ -14,7 +14,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'first_name', 'last_name', 'username', 'profile_image', 'about',
-                  'linkedin_profile', 'twitter_profile', 'facebook_profile', 'other_links', 'education', 'address']
+                  'linkedin_profile', 'twitter_profile', 'facebook_profile', 'other_links', 'education', 'address', 'is_admin']
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
