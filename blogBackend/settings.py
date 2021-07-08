@@ -26,7 +26,18 @@ SECRET_KEY = "GOT_NO_SECRET"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['enigmatic-lake-72500.herokuapp.com', '127.0.0.1', 'localhost']
+''' Allow All Domains with CORS'''
+ALLOWED_HOSTS=['*']
+CORS_ORIGIN_ALLOW_ALL = True
+
+''' Allow specific domains with CORS '''
+# ALLOWED_HOSTS = ['enigmatic-lake-72500.herokuapp.com', '127.0.0.1', 'localhost']
+# CORS_ORIGIN_ALLOW_ALL = False
+# CORS_ORIGIN_WHITELIST = [
+#        'http://localhost:8000',
+#         'http://127.0.0.1:8000',
+#         'http://enigmatic-lake-72500.herokuapp.com',
+# ]
 
 # Superuser: n@a.com -> nas12345
 
@@ -48,6 +59,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'django_extensions',
+    'corsheaders',
 ]
 
 CKEDITOR_UPLOAD_PATH = "images/"
@@ -61,6 +73,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'blogBackend.urls'
