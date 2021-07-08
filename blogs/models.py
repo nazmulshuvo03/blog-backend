@@ -27,6 +27,11 @@ class BlogTags(models.Model):
     def __str__(self):
         return self.name
 class Blog(models.Model):
+    status_choices = (
+        ('PUBLISHED', 'PUBLISHED'),
+        ('PENDING', 'PENDING'),
+        ('DECLINED', 'DECLINED')
+    )
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     header_image = models.ImageField(
@@ -50,7 +55,7 @@ class Blog(models.Model):
     likes = models.IntegerField(default=0, blank=True)
     dislikes = models.IntegerField(default=0, blank=True)
     power = models.FloatField(default=0, blank=True)
-    publish =  models.BooleanField(default=False, verbose_name='Publish')
+    status = models.CharField(max_length=15, choices=status_choices, default='PENDING')
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.heading)
