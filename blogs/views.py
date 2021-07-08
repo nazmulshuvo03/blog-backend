@@ -45,8 +45,19 @@ def blog_type_list_with_blogs(request):
         blogs = Blog.objects.filter(blog_type=t['name'])
         serialized_blogs = BlogListSerializer(blogs, many=True).data
         t['blogs'] = serialized_blogs
-    
+
+    other_blogs = Blog.objects.filter(blog_type=None)
+    serialized_other_blogs = BlogListSerializer(
+        other_blogs, many=True, context={'request': request}).data
+
+    serialized_types.append({'id': len(serialized_types)+1, 'name': 'No Type', 'slug': 'no_type', 'blogs': serialized_other_blogs})
     return JSONResponse({'code': 200, 'response': serialized_types})
+
+def blogs_without_type(request):
+    blogs = Blog.objects.filter(blog_type=None)
+    serialized_data = BlogListSerializer(
+        blogs, many=True, context={'request': request}).data
+    return JSONResponse({'code': 200, 'response': serialized_data})
 
 def blog_list_on_type(request, type_slug):
     try:
@@ -57,7 +68,6 @@ def blog_list_on_type(request, type_slug):
         
     except BlogType.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
 
 @api_view(['POST'])
 @permission_classes([AllowAny])

@@ -10,6 +10,7 @@ urlpatterns = [
     path('ops/<str:id>', views.blog_ops, name="blog_ops"),
     path('types', views.blog_type_list, name='blog_type_list'),
     path('types_with_blog', views.blog_type_list_with_blogs, name='blog_type_list_with_blogs'),
+    path('blogs_without_type', views.blogs_without_type, name='blogs_without_type'),
     path('type/<slug:type_slug>', views.blog_list_on_type, name='blog_list_on_type'),
     path('comment/create', views.create_comment, name='create_comment'),
     path('like/<slug:blog_slug>', views.like_a_blog, name='like_a_blog'),

@@ -15,8 +15,15 @@ class CommentAdmin(admin.ModelAdmin):
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
     list_display = ('heading', 'updated_date', 'blog_type', 'power', 'likes', 'dislikes', 'status')
-    list_filter = ('updated_date', 'created_date', 'blog_type')
+    list_filter = ('status', 'updated_date', 'created_date', 'blog_type')
     search_fields = ('heading', 'slug', 'content', 'blog_type', 'blog_tags')
+    actions = ['publish_all', 'decline_all']
+
+    def publish_all(self, request, queryset):
+        queryset.update(status="PUBLISHED")
+
+    def decline_all(self, request, queryset):
+        queryset.update(status="DECLINED")
 
 admin.site.register(BlogType)
 admin.site.register(BlogTags)
