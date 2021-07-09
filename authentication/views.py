@@ -19,14 +19,24 @@ def restricted(request, *args, **kwargs):
     return Response(data="Only for logged in Users", status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def user_detail(request, id):
     user = get_object_or_404(User, id=id)
     serialized_user = UserDetailsSerializer(user).data
 
     try:
-        blogs = Blog.objects.filter(author=id)
-        serialized_blogs = BlogListSerializer(blogs, many=True).data
-        serialized_user["blogs"] = serialized_blogs
+        pending_blogs = user.blogs.filter(status='PENDING')
+        published_blogs = user.blogs.filter(status='PUBLISHED')
+        declined_blogs = user.blogs.filter(status='DECLINED')
+
+        serialized_pending_blogs = BlogListSerializer(pending_blogs, many=True).data
+        serialized_published_blogs = BlogListSerializer(published_blogs, many=True).data
+        serialized_declined_blogs = BlogListSerializer(declined_blogs, many=True).data
+
+        serialized_user["pending_blogs"] = serialized_pending_blogs
+        serialized_user["published_blogs"] = serialized_published_blogs
+        serialized_user["declined_blogs"] = serialized_declined_blogs
     except Blog.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 

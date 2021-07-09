@@ -37,10 +37,10 @@ class Blog(models.Model):
     header_image = models.ImageField(
         default='', upload_to='images/', null=True, blank=True)
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, to_field='id', related_name='Author', null=True, blank=True)
+        User, on_delete=models.CASCADE, to_field='id', related_name='blogs', null=True, blank=True)
     heading = models.CharField(max_length=1000)
     meta_title = models.CharField(max_length=1000, default="", null=True, blank=True)
-    page_title = models.CharField(max_length=1000)
+    page_title = models.CharField(max_length=1000, default="", null=True, blank=True)
     content = RichTextUploadingField()
     created_date = CreationDateTimeField(null=True)
     updated_date = ModificationDateTimeField(null=True)

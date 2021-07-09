@@ -14,7 +14,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ('heading', 'updated_date', 'blog_type', 'power', 'likes', 'dislikes', 'status')
+    list_display = ('heading', 'author', 'updated_date', 'blog_type', 'power', 'likes', 'dislikes', 'status')
     list_filter = ('status', 'updated_date', 'created_date', 'blog_type')
     search_fields = ('heading', 'slug', 'content', 'blog_type', 'blog_tags')
     actions = ['publish_all', 'decline_all']

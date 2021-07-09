@@ -79,17 +79,6 @@ def blog_type_list_with_published_blogs(request):
     serialized_types.append({'id': len(serialized_types)+1, 'name': 'No Type', 'slug': 'no_type', 'blogs': serialized_other_blogs})
     return JSONResponse({'code': 200, 'response': serialized_types})
 
-'''
-if len(search_params) > 0:
-        if list(search_params.keys())[0] == 'status': 
-            blogs = Blog.objects.filter(status=search_params.get('status'))
-        elif list(search_params.keys())[0] == 'blog_type': 
-            blogs = Blog.objects.filter(blog_type=search_params.get('blog_type'))
-        else:
-            blogs = Blog.objects.all()
-    else:
-        blogs = Blog.objects.all()
-'''
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
