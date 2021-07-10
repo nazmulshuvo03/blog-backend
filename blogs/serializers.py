@@ -18,7 +18,8 @@ class BlogListSerializer(serializers.ModelSerializer):
             'author',
             'blog_type',
             'blog_tags',
-            'status'
+            'status',
+            'description'
         ]
 
 
