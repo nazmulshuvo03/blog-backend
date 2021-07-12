@@ -130,6 +130,14 @@ def create_faqs(request):
             return Response(serialized_faq.data, status=status.HTTP_201_CREATED)
         return Response(serialized_faq.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_faqs(request):
+    if request.method == 'GET':
+        faqs = Faq.objects.all()
+        serialized_faqs = FaqViewSerializer(faqs, many=True).data
+        return Response({'code': 200, 'response': serialized_faqs})    
+
 @api_view(['PATCH'])
 @permission_classes([AllowAny])
 def like_a_blog(request, blog_slug):

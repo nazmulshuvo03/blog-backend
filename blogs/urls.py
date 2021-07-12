@@ -16,5 +16,6 @@ urlpatterns = [
     path('comment/create', views.create_comment, name='create_comment'),
     path('like/<slug:blog_slug>', views.like_a_blog, name='like_a_blog'),
     path('dislike/<slug:blog_slug>', views.dislike_a_blog, name='dislike_a_blog'),
+    path('faqs/list', views.get_faqs, name='get_faqs'),
     path('faqs/create', views.create_faqs, name='create_faq'),
 ]
