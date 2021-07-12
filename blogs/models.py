@@ -69,6 +69,8 @@ class Blog(models.Model):
 
 
 class Faq(models.Model):
+    id = models.UUIDField(
+         primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='faqs')
     question = models.CharField(max_length=255, null=True, unique=True)
     answer = models.CharField(max_length=255, null=True, unique=True)
@@ -77,6 +79,8 @@ class Faq(models.Model):
         return self.question + " -> " + self.answer
 
 class Comments(models.Model):
+    id = models.UUIDField(
+         primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments')
     name = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(verbose_name="email",
