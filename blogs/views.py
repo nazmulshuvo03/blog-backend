@@ -57,7 +57,7 @@ def blogs_without_type(request):
 def blog_list_on_type(request, type_slug):
     try:
         type_of_blog = get_object_or_404(BlogType, slug=type_slug)
-        blogs = Blog.objects.filter(blog_type=type_of_blog)
+        blogs = Blog.objects.filter(blog_type=type_of_blog, status="PUBLISHED")
         serialized_blogs = BlogListSerializer(blogs, many=True).data
         return JSONResponse({'code': 200, 'response': serialized_blogs})
         
